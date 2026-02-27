@@ -17,9 +17,10 @@ class admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->name === 'STOURI Ibrahim')
-        return $next($request);
-        else 
+        if(Auth::check() && Auth::user()->name === 'admin') {
+            return $next($request);
+        }
+        
         abort('401');
     }
 }

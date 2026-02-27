@@ -16,9 +16,11 @@ class isActive
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Auth::user()->active==1)
-        return $next($request);
-        else
+        // If not logged in, or logged in and active, allow request
+        if(!Auth::check() || Auth::user()->active == 1) {
+            return $next($request);
+        }
+        
         abort('401');
     }
 }

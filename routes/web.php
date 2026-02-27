@@ -26,8 +26,10 @@ Route::middleware('auth')->group(function () {
 
 
 //page de client pour les produits
-Route::get('/dashboard',
-[ProductsController::class,'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProductsController::class,'index'])->name('dashboard');
+
+//page produit (PDP)
+Route::get('/product/{id}', [ProductsController::class,'show'])->name('product.show');
 
 //afficher panier
 Route::get('/bag',

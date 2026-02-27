@@ -21,7 +21,7 @@ return new class extends Migration
             
             
             $table->foreign('codeProd')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('codeCom')->references('id')->on('commandes')->onDelete('cascade');
+            $table->foreign('codeCom')->references('codeCom')->on('commandes')->onDelete('cascade');
         });
     }
 

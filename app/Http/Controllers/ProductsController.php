@@ -25,6 +25,14 @@ class ProductsController extends Controller
         $products=Products::all();
         return view('dashboard',['products'=>$products]);
     }
+
+    //afficher la page detail d'un produit
+    public function show($id){
+        $product = Products::findOrFail($id);
+        // Get 4 random products for "Complete the Look", excluding the current one
+        $recommendations = Products::where('id', '!=', $id)->inRandomOrder()->limit(4)->get();
+        return view('product_detail', compact('product', 'recommendations'));
+    }
     
     //affichage du panier
     public function Bag(){
@@ -114,7 +122,7 @@ class ProductsController extends Controller
         return redirect()->route('Bag');
         }
         else{
-            $product->delete();
+            $bags->delete();
             return redirect()->route('Bag');
         }
     }
@@ -127,7 +135,6 @@ class ProductsController extends Controller
         $user=Auth::user();
         $bag = Bag::where('idClient', $user->id)->first();
         $x=BagPro::where('codeBag',$bag->id)->with('products')->get();
-        //$products = $x->pluck('products')->flatten();
         $Request->validate([
             'adresse' => 'required',
         ]);
@@ -153,7 +160,13 @@ class ProductsController extends Controller
                 'qtePro' => $item->quantity,
                 'prixtotal' => $total,
             ]);
-    }
+            
+            // Decrement Stock
+            $prodToUpdate = Products::find($item->products->id);
+            if($prodToUpdate && $prodToUpdate->stock >= $item->quantity) {
+                $prodToUpdate->decrement('stock', $item->quantity);
+            }
+        }
 
         $bag->delete();
         return redirect()->route('dashboard');

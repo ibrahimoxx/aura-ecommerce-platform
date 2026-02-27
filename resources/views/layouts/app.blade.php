@@ -9,28 +9,41 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <style>
+            body { font-family: 'Inter', sans-serif; }
+            /* Hide scrollbar for clean look */
+            ::-webkit-scrollbar { width: 6px; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
+            ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+        </style>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="antialiased text-[#222222] bg-[#ffffff] selection:bg-[#556B2F] selection:text-white">
+        <div class="min-h-screen flex flex-col">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white border-b border-gray-100 mt-8 mb-6">
+                    <div class="max-w-[1400px] mx-auto px-6 lg:px-12 pb-4">
                         {{ $header }}
                     </div>
                 </header>
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-grow">
                 {{ $slot }}
             </main>
+            
+            <!-- Global Footer Placeholder -->
+            @include('layouts.footer')
         </div>
     </body>
 </html>
